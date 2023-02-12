@@ -29,6 +29,8 @@ Finally. After navigating to the webapge, the passwords.txt file could also be s
 I decided to try and upload a test file to the share given that I was able to log in -- success
 ![test proof](https://user-images.githubusercontent.com/103790652/218334757-55bb822c-ece9-4077-9e05-1f216be6b0a0.png)
 
+## Exploitation
+
 I initially crafted a php shell to upload but realised that an aspx shell would be more appropriate given the webserver was IIS based.
 After uploading the aspx shell and setting up a listener, the response was caught and I had access and could grab the user.txt flag.
 ![shell+catch](https://user-images.githubusercontent.com/103790652/218334928-582ada99-1415-4afd-8b9c-f8a448a7f5f5.png)

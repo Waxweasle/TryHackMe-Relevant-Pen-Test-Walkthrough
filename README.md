@@ -10,7 +10,7 @@ Investigating SMB first showed an anonymous/ guest login was possible on the n4t
 ![pass tct](https://user-images.githubusercontent.com/103790652/218334993-e6170224-4d3e-42fd-ab46-74f612b7b65e.png)
 
 
-The file contained a base64 string that when decoded, gave a username and password.
+The file contained a base64 string that when decoded, gave a couple of usernames and passwords.
 
 I spent some time trying to find a login page/ portal , connect to RDP, trying to sign into other SMB shares - trying to find somewhere to use the credentials but came up short so decided to backtrack and see if I'd missed something. 
 

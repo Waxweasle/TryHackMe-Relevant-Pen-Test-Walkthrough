@@ -5,6 +5,7 @@ Starting out with a basic scan, a few open ports were returned, including an SMB
 ![scan](https://user-images.githubusercontent.com/103790652/218334014-fc8b38da-da51-4f1b-ae53-6c6822595e6c.png)
 
 Investigating SMB first showed an anonymous/ guest login was possible on the n4twrksv share which contained the passwords.txt file.
+
 ![initialsmb](https://user-images.githubusercontent.com/103790652/218334215-90af2043-2071-4ebe-ac92-e6614ca9fca1.png)
 
 ![pass tct](https://user-images.githubusercontent.com/103790652/218334993-e6170224-4d3e-42fd-ab46-74f612b7b65e.png)

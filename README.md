@@ -1,6 +1,6 @@
-# TryHackMe-Relevant-Pen-Test-Walkthrough
+# TryHackMe-Relevant-Pen-Test-Walkthrough-2-ways
 
-## Enumeration
+## Enumeration - PrintSpoofer path
 Starting out with a basic scan, a few open ports were returned, including an SMB server and webpage.
 ![scan](https://user-images.githubusercontent.com/103790652/218334014-fc8b38da-da51-4f1b-ae53-6c6822595e6c.png)
 
@@ -34,6 +34,44 @@ I decided to try and upload a test file to the share given that I was able to lo
 I initially crafted a php shell to upload but realised that an aspx shell would be more appropriate given the webserver was IIS based.
 After uploading the aspx shell and setting up a listener, the response was caught and I had access and could grab the user.txt flag.
 ![shell+catch](https://user-images.githubusercontent.com/103790652/218334928-582ada99-1415-4afd-8b9c-f8a448a7f5f5.png)
+
+## Escalation
+Once in the system, I checked the users privileges via whoami /priv which retrned the following permissions
+![priv](https://user-images.githubusercontent.com/103790652/219200208-d8ee4bd5-e22e-4d95-8ec6-ed860d8db4a9.png)
+
+Initially, I checked escalation methods via ChangeNotify but found nothing promising so moved on to Impersonate. 
+I found an possible mthod via https://www.plesk.com/kb/support/microsoft-windows-seimpersonateprivilege-local-privilege-escalation/ via PrintsPoofer (named pipe impersonation). "As a prerequisite, the only required privilege is SeImpersonatePrivilege" - perfect!
+
+After downloading the .exe from https://github.com/dievus/printspoofer I uploaded to the smb share on the vulnerable server for easy access.
+All that was required was to then run the program from the machine and I was granted system.
+![print_sploit](https://user-images.githubusercontent.com/103790652/219204120-312677a1-209f-461e-ae8e-00903b7f9b72.png)
+
+## Enumeration Eternal Blue path
+A vulnrability script returns that the server is vulnerable to CVE-2017-0143 / the infamous Eternal Blue exploit.
+![nmap vuln](https://user-images.githubusercontent.com/103790652/219210381-bb2ed937-8545-4499-b890-bc9a41272fde.png)
+
+I decided to deploy this exploit manually, without Metasploit.
+Checking for the exploit within the database:
+![searchsploit](https://user-images.githubusercontent.com/103790652/219210744-9d5b1fec-9cc2-4744-9a51-1634f4ab74e0.png)
+
+After editing the program to include a username and password (one of the ones found contained in the passwords.txt file on the SMB server) and running the exploit, there were multiple errors that prevented successful exectution. I believe that the script was written for python2, rather than the present version of python3 which handles (concatenates) variables differently (this might be wrong but is my current understanding).
+I downloaded the requirements to run the program with python2 and it worked.
+![exploit_test](https://user-images.githubusercontent.com/103790652/219213182-4a1a9a23-5480-4c18-8ff9-4244d3b73b65.png)
+
+You can see that the base exploit simply drops a .txt file as a test so I located the responsible function (smb_pwn) and edited the code to drop an msfvenom payload (the same as in the above path) instead:
+![code](https://user-images.githubusercontent.com/103790652/219213646-42208592-3d46-472e-b509-f8cb788e0306.png)
+
+Set up a listener and successfully ran the exploit with the payload included:
+![exploit_run](https://user-images.githubusercontent.com/103790652/219213757-6cf90973-beb7-486b-a605-852b6d52c87c.png)
+
+I was instantly granted nt authority\system shell!
+![system](https://user-images.githubusercontent.com/103790652/219214233-94397815-e0c1-4e59-8718-dc8f6be6c768.png)
+
+
+
+
+
+
 
 
 

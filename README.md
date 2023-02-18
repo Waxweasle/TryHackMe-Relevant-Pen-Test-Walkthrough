@@ -47,7 +47,9 @@ After downloading the .exe from https://github.com/dievus/printspoofer I uploade
 All that was required was to then run the program from the machine and I was granted system.
 ![print_sploit](https://user-images.githubusercontent.com/103790652/219204120-312677a1-209f-461e-ae8e-00903b7f9b72.png)
 
-## Enumeration Eternal Blue path
+
+# Eternal Blue (Manual exploit) path
+## Enumeration
 A vulnrability script returns that the server is vulnerable to CVE-2017-0143 / the infamous Eternal Blue exploit.
 ![nmap vuln](https://user-images.githubusercontent.com/103790652/219210381-bb2ed937-8545-4499-b890-bc9a41272fde.png)
 
@@ -55,6 +57,7 @@ I decided to deploy this exploit manually, without Metasploit.
 Checking for the exploit within the database:
 ![searchsploit](https://user-images.githubusercontent.com/103790652/219210744-9d5b1fec-9cc2-4744-9a51-1634f4ab74e0.png)
 
+## Exploitation
 After editing the program to include a username and password (one of the ones found contained in the passwords.txt file on the SMB server) and running the exploit, there were multiple errors that prevented successful exectution. I believe that the script was written for python2, rather than the present version of python3 which handles (concatenates) variables differently (this might be wrong but is my current understanding).
 I downloaded the requirements to run the program with python2 and it worked.
 ![exploit_test](https://user-images.githubusercontent.com/103790652/219213182-4a1a9a23-5480-4c18-8ff9-4244d3b73b65.png)
@@ -65,8 +68,11 @@ You can see that the base exploit simply drops a .txt file as a test so I locate
 Set up a listener and successfully ran the exploit with the payload included:
 ![exploit_run](https://user-images.githubusercontent.com/103790652/219213757-6cf90973-beb7-486b-a605-852b6d52c87c.png)
 
-I was instantly granted nt authority\system shell!
+I was instantly granted system shell!
+
 ![system](https://user-images.githubusercontent.com/103790652/219214233-94397815-e0c1-4e59-8718-dc8f6be6c768.png)
+
+I particularly enjoyed this route as it was fun to tinker with the code of the exploit and deploy it manually, rather that just "point and clicking" at a target with Metasploit.
 
 
 
